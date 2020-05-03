@@ -4,6 +4,7 @@ import sys
 sys.path.append(".\\")
 import argparse
 from api import PlateAPI
+import glob
 from sqldb import DbManager
 
 def parse_args():
@@ -14,7 +15,7 @@ def parse_args():
     parser.add_argument('--cfg_filepath', dest='cfg_filepath',
                         help='config file', default=".\\cfgs\\easypr.yml", type=str)
     parser.add_argument('--image_path', dest='image_path',
-                        help='image path', default=".\\data\\test.jpg", type=str)
+                        help='image path', default=".\\data", type=str)
     args = parser.parse_args()
     return args
 
@@ -24,11 +25,17 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    plate_api = PlateAPI(cfg_filepath=args.cfg_filepath)
-    chars = plate_api.process(args.image_path)
     db = DbManager()
     db.create_table()
-    for i in chars:
-        db.insert_info(i)
-    print (chars)
+
+    plate_api = PlateAPI(cfg_filepath=args.cfg_filepath)
+    for name in glob.glob(args.image_path+'\\*'):
+        print(name)
+        chars = plate_api.process(name)
+    
+        for i in set(chars):
+            if len(i) == 0:
+                continue
+            db.insert_info(i)
+        print (chars)
 

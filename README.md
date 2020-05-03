@@ -6,6 +6,7 @@
 
 使用以下命令保持环境一致
 ```python
+python 版本 3.6
 pip install -r requirements.txt
 ```
 
