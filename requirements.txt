@@ -1,4 +1,4 @@
-dask==2.15.0
+dask==2021.10.0
 easydict==1.9
 Keras==2.3.1
 Keras-Applications==1.0.8
